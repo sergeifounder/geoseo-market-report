@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GeoSEO Market Intelligence Report</title>
+<style>
+:root {
+  --bg: #0a0e17;
+  --surface: #111827;
+  --surface2: #1a2236;
+  --border: #2a3450;
+  --text: #e2e8f0;
+  --text-dim: #94a3b8;
+  --accent: #38bdf8;
+  --accent2: #818cf8;
+  --green: #34d399;
+  --red: #f87171;
+  --orange: #fb923c;
+  --yellow: #fbbf24;
+  --pink: #f472b6;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+.container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+header { padding: 60px 0 40px; text-align: center; border-bottom: 1px solid var(--border); }
+header h1 { font-size: 2.5rem; font-weight: 800; background: linear-gradient(135deg, var(--accent), var(--accent2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 12px; }
+header p { color: var(--text-dim); font-size: 1.1rem; max-width: 600px; margin: 0 auto; }
+header .meta { margin-top: 20px; display: flex; gap: 24px; justify-content: center; flex-wrap: wrap; }
+header .meta span { background: var(--surface); padding: 6px 16px; border-radius: 20px; font-size: 0.85rem; color: var(--accent); border: 1px solid var(--border); }
+
+nav { position: sticky; top: 0; z-index: 100; background: rgba(10,14,23,0.95); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border); padding: 12px 0; }
+nav .container { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px; }
+nav a { color: var(--text-dim); text-decoration: none; font-size: 0.8rem; padding: 6px 14px; border-radius: 6px; white-space: nowrap; transition: all 0.2s; }
+nav a:hover { background: var(--surface); color: var(--accent); }
+
+section { padding: 60px 0; border-bottom: 1px solid var(--border); }
+section:last-child { border-bottom: none; }
+h2 { font-size: 1.8rem; font-weight: 700; margin-bottom: 8px; }
+h2 .num { color: var(--accent); font-size: 0.9rem; font-weight: 400; margin-right: 8px; }
+.subtitle { color: var(--text-dim); margin-bottom: 32px; font-size: 0.95rem; }
+h3 { font-size: 1.2rem; font-weight: 600; margin: 32px 0 16px; color: var(--accent); }
+
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
+.grid4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+
+@media (max-width: 768px) {
+  .grid2, .grid3, .grid4 { grid-template-columns: 1fr; }
+  header h1 { font-size: 1.8rem; }
+  h2 { font-size: 1.4rem; }
+}
+
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 24px; }
+.card.highlight { border-color: var(--accent); }
+.card h4 { font-size: 1rem; font-weight: 600; margin-bottom: 8px; }
+.card .number { font-size: 2rem; font-weight: 800; color: var(--accent); }
+.card .label { font-size: 0.8rem; color: var(--text-dim); }
+.card.green .number { color: var(--green); }
+.card.orange .number { color: var(--orange); }
+.card.red .number { color: var(--red); }
+.card.pink .number { color: var(--pink); }
+
+table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+table thead th { text-align: left; padding: 10px 12px; background: var(--surface2); color: var(--accent); font-weight: 600; border-bottom: 2px solid var(--border); position: sticky; top: 52px; }
+table tbody td { padding: 10px 12px; border-bottom: 1px solid var(--border); }
+table tbody tr:hover { background: var(--surface2); }
+.table-wrap { overflow-x: auto; border-radius: 12px; border: 1px solid var(--border); }
+
+.tag { display: inline-block; padding: 2px 10px; border-radius: 12px; font-size: 0.75rem; font-weight: 600; }
+.tag.green { background: rgba(52,211,153,0.15); color: var(--green); }
+.tag.red { background: rgba(248,113,113,0.15); color: var(--red); }
+.tag.orange { background: rgba(251,146,60,0.15); color: var(--orange); }
+.tag.blue { background: rgba(56,189,248,0.15); color: var(--accent); }
+.tag.yellow { background: rgba(251,191,36,0.15); color: var(--yellow); }
+.tag.pink { background: rgba(244,114,182,0.15); color: var(--pink); }
+
+.bar-chart { display: flex; flex-direction: column; gap: 10px; }
+.bar-row { display: flex; align-items: center; gap: 12px; }
+.bar-label { width: 140px; font-size: 0.85rem; color: var(--text-dim); text-align: right; flex-shrink: 0; }
+.bar-track { flex: 1; height: 28px; background: var(--surface2); border-radius: 6px; overflow: hidden; position: relative; }
+.bar-fill { height: 100%; border-radius: 6px; display: flex; align-items: center; padding-left: 10px; font-size: 0.75rem; font-weight: 600; color: white; transition: width 0.5s; }
+.bar-value { width: 60px; font-size: 0.85rem; font-weight: 600; flex-shrink: 0; }
+
+.timeline { position: relative; padding-left: 32px; }
+.timeline::before { content: ''; position: absolute; left: 12px; top: 0; bottom: 0; width: 2px; background: var(--border); }
+.timeline-item { position: relative; margin-bottom: 24px; }
+.timeline-item::before { content: ''; position: absolute; left: -26px; top: 6px; width: 12px; height: 12px; border-radius: 50%; background: var(--accent); border: 2px solid var(--bg); }
+.timeline-item.done::before { background: var(--green); }
+.timeline-item h4 { font-size: 0.95rem; }
+.timeline-item p { font-size: 0.85rem; color: var(--text-dim); }
+.timeline-item .time { font-size: 0.75rem; color: var(--accent); font-weight: 600; }
+
+.score-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 2px; }
+.score-cell { text-align: center; padding: 8px 4px; font-size: 0.75rem; border-radius: 4px; }
+.score-cell.header { background: var(--surface2); color: var(--accent); font-weight: 600; }
+.score-cell.label { background: var(--surface2); color: var(--text-dim); text-align: left; padding-left: 8px; }
+.score-high { background: rgba(52,211,153,0.2); color: var(--green); font-weight: 700; }
+.score-mid { background: rgba(251,191,36,0.15); color: var(--yellow); }
+.score-low { background: rgba(248,113,113,0.15); color: var(--red); }
+
+.callout { background: var(--surface); border-left: 4px solid var(--accent); padding: 20px 24px; border-radius: 0 12px 12px 0; margin: 24px 0; }
+.callout.warning { border-left-color: var(--orange); }
+.callout.success { border-left-color: var(--green); }
+.callout h4 { margin-bottom: 8px; }
+
+.flex-between { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
+
+.competitor-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px; }
+.competitor-card h4 { font-size: 1rem; margin-bottom: 4px; }
+.competitor-card .price { color: var(--green); font-weight: 700; font-size: 0.9rem; }
+.competitor-card .desc { color: var(--text-dim); font-size: 0.8rem; margin: 8px 0; }
+.competitor-card .stats { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 8px; }
+.competitor-card .stat { font-size: 0.75rem; color: var(--text-dim); }
+.competitor-card .stat strong { color: var(--text); }
+
+footer { padding: 40px 0; text-align: center; color: var(--text-dim); font-size: 0.8rem; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="container">
+    <h1>GeoSEO Market Intelligence</h1>
+    <p>Полное исследование рынка GEO+SEO инструментов. 40+ конкурентов, 6 сегментов ЦА, каналы роста, финансовые модели.</p>
+    <div class="meta">
+      <span>13 исследований</span>
+      <span>40+ конкурентов</span>
+      <span>80+ источников</span>
+      <span>22-23 июня 2026</span>
+    </div>
+  </div>
+</header>
+
+<nav>
+  <div class="container">
+    <a href="#market">Рынок</a>
+    <a href="#competitors">Конкуренты</a>
+    <a href="#growth">Как растут</a>
+    <a href="#gap">Наше место</a>
+    <a href="#segments">6 сегментов ЦА</a>
+    <a href="#money">Где деньги</a>
+    <a href="#channels">Каналы</a>
+    <a href="#model">Наша модель</a>
+    <a href="#plan90">90-дневный план</a>
+    <a href="#projections">Прогнозы</a>
+  </div>
+</nav>
+
+<!-- SECTION 1: MARKET -->
+<section id="market">
+  <div class="container">
+    <h2><span class="num">01</span> Рынок GEO-инструментов</h2>
+    <p class="subtitle">Generative Engine Optimization: оптимизация для AI-поисковиков (ChatGPT, Perplexity, Google AI Overviews)</p>
+
+    <div class="grid4">
+      <div class="card"><div class="number">$848M</div><div class="label">TAM 2025</div></div>
+      <div class="card green"><div class="number">$33B</div><div class="label">TAM 2034 (прогноз)</div></div>
+      <div class="card orange"><div class="number">45-50%</div><div class="label">CAGR рост/год</div></div>
+      <div class="card pink"><div class="number">40+</div><div class="label">Инструментов на рынке</div></div>
+    </div>
+
+    <h3>Ключевые факты</h3>
+    <div class="grid2">
+      <div class="card">
+        <h4>Формула видимости в AI</h4>
+        <p style="font-size:0.9rem; color:var(--text-dim)">Появление в LLM (ChatGPT, Perplexity) = <strong style="color:var(--accent)">~75-80% классический SEO</strong> + <strong style="color:var(--accent2)">~20-25% GEO-оптимизация</strong></p>
+        <p style="font-size:0.8rem; color:var(--text-dim); margin-top:8px">Источник: Zyppy 23 factors, Ahrefs, AirOps исследования</p>
+      </div>
+      <div class="card">
+        <h4>Пересечение Google и AI</h4>
+        <p style="font-size:0.9rem; color:var(--text-dim)">Только <strong style="color:var(--red)">38%</strong> сайтов из Google Top-10 цитируются ChatGPT (было 76%). SEO уже не = AI-видимость.</p>
+      </div>
+      <div class="card">
+        <h4>Порог входа в ChatGPT</h4>
+        <p style="font-size:0.9rem; color:var(--text-dim)">Нужно <strong style="color:var(--orange)">190K+ визитов/мес</strong> и <strong style="color:var(--orange)">32K+ бэклинков</strong> чтобы ChatGPT начал цитировать. Для 90% сайтов это недостижимо.</p>
+      </div>
+      <div class="card">
+        <h4>Zero-click поиск</h4>
+        <p style="font-size:0.9rem; color:var(--text-dim)"><strong style="color:var(--red)">65%</strong> поисков заканчиваются без клика. AI Overviews забирают ещё больше трафика.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 2: COMPETITORS -->
+<section id="competitors">
+  <div class="container">
+    <h2><span class="num">02</span> 40+ Конкурентов</h2>
+    <p class="subtitle">Рынок разделён на 5 групп. Ни один не объединяет все фичи GeoSEO.today.</p>
+
+    <h3>Группа A: GEO-мониторинг (чистые GEO-инструменты)</h3>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Инструмент</th><th>Цена/мес</th><th>Free?</th><th>Site Crawl</th><th>GEO</th><th>SEO</th><th>Простой язык</th><th>LLM Tracking</th><th>Угроза</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong style="color:var(--green)">GeoSEO.today (мы)</strong></td><td>Free / $49</td><td><span class="tag green">Да</span></td><td><span class="tag green">200 стр</span></td><td><span class="tag green">Да</span></td><td><span class="tag green">44 чека</span></td><td><span class="tag orange">Технический*</span></td><td><span class="tag red">Нет</span></td><td>—</td></tr>
+          <tr><td>Otterly.AI</td><td>$29-489</td><td>15 промптов</td><td><span class="tag red">Нет</span></td><td><span class="tag green">6 LLM</span></td><td><span class="tag red">Нет</span></td><td><span class="tag red">Нет</span></td><td><span class="tag green">Daily</span></td><td><span class="tag orange">HIGH</span></td></tr>
+          <tr><td>Peec AI</td><td>$89-499</td><td><span class="tag red">Нет</span></td><td><span class="tag red">Нет</span></td><td><span class="tag green">3 LLM</span></td><td><span class="tag red">Нет</span></td><td><span class="tag red">Нет</span></td><td><span class="tag green">Да</span></td><td><span class="tag red">VERY HIGH</span></td></tr>
+          <tr><td>Profound</td><td>$99-2000+</td><td><span class="tag red">Нет</span></td><td><span class="tag red">Нет</span></td><td><span class="tag green">5 LLM</span></td><td><span class="tag red">Нет</span></td><td><span class="tag red">Нет</span></td><td><span class="tag green">Да</span></td><td><span class="tag red">$1B unicorn</span></td></tr>
+          <tr><td>Rankfender</td><td>$89-499</td><td>Free tier</td><td><span class="tag red">Нет</span></td><td><span class="tag green">7 LLM</span></td><td>Контент</td><td><span class="tag red">Нет</span></td><td><span class="tag green">Да</span></td><td><span class="tag orange">HIGH</span></td></tr>
+          <tr><td>ZipTie.dev</td><td>$69+</td><td>Trial</td><td><span class="tag red">Нет</span></td><td><span class="tag green">3 LLM</span></td><td><span class="tag red">Нет</span></td><td><span class="tag red">Нет</span></td><td><span class="tag green">Да</span></td><td><span class="tag yellow">MEDIUM</span></td></tr>
+          <tr><td>Visiblie</td><td>&euro;79-199</td><td><span class="tag red">Нет</span></td><td><span class="tag red">Нет</span></td><td><span class="tag green">6 LLM</span></td><td><span class="tag red">Нет</span></td><td><span class="tag red">Нет</span></td><td><span class="tag green">Да</span></td><td><span class="tag yellow">MEDIUM</span></td></tr>
+          <tr><td>Geoptie</td><td>$49-149</td><td>Trial</td><td>Tech Audit</td><td><span class="tag green">4 LLM</span></td><td>Частично</td><td><span class="tag red">Нет</span></td><td><span class="tag green">Да</span></td><td><span class="tag yellow">MEDIUM</span></td></tr>
+          <tr><td>GetCito</td><td>$19-39</td><td><span class="tag green">Да</span></td><td><span class="tag red">Нет</span></td><td><span class="tag green">9 LLM</span></td><td><span class="tag red">Нет</span></td><td><span class="tag red">Нет</span></td><td><span class="tag green">Да</span></td><td><span class="tag yellow">MEDIUM</span></td></tr>
+          <tr><td>Goodie AI</td><td>$295-645</td><td><span class="tag red">Нет</span></td><td><span class="tag red">Нет</span></td><td><span class="tag green">11 LLM</span></td><td><span class="tag red">Нет</span></td><td><span class="tag red">Нет</span></td><td><span class="tag green">Да</span></td><td><span class="tag yellow">LOW</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="font-size:0.8rem; color:var(--text-dim); margin-top:8px">* Язык AS IS технический (BLUF, canonical, E-E-A-T). Требуется упрощение для ЦА founders.</p>
+
+    <h3>Группа B: SEO-платформы с GEO</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Платформа</th><th>Цена за GEO</th><th>Глубина GEO</th><th>vs GeoSEO</th></tr></thead>
+        <tbody>
+          <tr><td>Ahrefs Brand Radar</td><td>$828+/мес</td><td>6 LLM, share of voice</td><td>В 17x дороже, нет аудита сайта</td></tr>
+          <tr><td>Semrush AI Toolkit</td><td>$228+/мес</td><td>4 LLM, 25+ факторов</td><td>Ближайший по глубине, но 5x дороже</td></tr>
+          <tr><td>SE Ranking</td><td>$89-240+</td><td>2 LLM (слабый GEO)</td><td>3-5x дороже</td></tr>
+          <tr><td>BrightEdge</td><td>$26,800+/год</td><td>Enterprise</td><td>Другая лига</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Группа C: Local SEO (кто добавил GEO?)</h3>
+    <div class="grid3">
+      <div class="competitor-card" style="border-color:var(--orange)">
+        <h4>LocalFalcon</h4>
+        <div class="price">$25-350/мес</div>
+        <div class="desc">Добавили Share of AI Voice (SAIV) — ChatGPT, Gemini, Grok. Ближайший к Local+GEO.</div>
+      </div>
+      <div class="competitor-card">
+        <h4>Birdeye</h4>
+        <div class="price">$299+/мес</div>
+        <div class="desc">Multi-location GEO. Мощный, но enterprise цены.</div>
+      </div>
+      <div class="competitor-card">
+        <h4>BrightLocal</h4>
+        <div class="price">$39-79/мес</div>
+        <div class="desc">$32.9M revenue, 6800 клиентов, churn 2%. НО: нет GEO-фич.</div>
+      </div>
+    </div>
+
+    <h3>"GeoSEO" прямые конкуренты</h3>
+    <div class="grid3">
+      <div class="competitor-card">
+        <h4>geoseoapp.com</h4>
+        <div class="desc">Weekend-проект. Запуск апр 2026. Анонимный автор. <strong style="color:var(--red)">0 трекшн, 0 маркетинг.</strong> OpenAI wrapper. Хаотичный pricing ($9.99/нед = $520/год).</div>
+        <span class="tag red">Не угроза</span>
+      </div>
+      <div class="competitor-card">
+        <h4>geoseodashboard.com</h4>
+        <div class="desc">Waitlist-лендинг. Домен с апр 2025. Нет продукта. "100+ waitlist".</div>
+        <span class="tag yellow">Мониторить</span>
+      </div>
+      <div class="competitor-card">
+        <h4>geoseoacademy.com</h4>
+        <div class="desc">Бразильский курс по GEO. Camillo Dantas. Другая категория (образование), другой рынок (PT).</div>
+        <span class="tag green">Не конкурент</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 3: GROWTH STORIES -->
+<section id="growth">
+  <div class="container">
+    <h2><span class="num">03</span> Как конкуренты росли</h2>
+    <p class="subtitle">Реальные истории роста с цифрами и каналами</p>
+
+    <div class="grid2">
+      <div class="card">
+        <h4>Peec AI <span class="tag pink">$10M ARR за 16 мес</span></h4>
+        <p style="font-size:0.85rem; color:var(--text-dim); margin:8px 0">Берлин. Antler когорта. MVP за 1.5 дня. 8 LOI до написания кода.</p>
+        <p style="font-size:0.85rem"><strong>Что сработало:</strong> PLG + низкая цена (&euro;85 vs $500+) &rarr; 300+ клиентов/мес. 20% конверсий через AI search. Билборды в Берлине. PR: TechCrunch, Sifted.</p>
+        <p style="font-size:0.85rem"><strong>Raised:</strong> $29M total. Оценка $100M+.</p>
+      </div>
+      <div class="card">
+        <h4>Profound <span class="tag pink">$1B unicorn за 18 мес</span></h4>
+        <p style="font-size:0.85rem; color:var(--text-dim); margin:8px 0">South Park Commons &rarr; Sequoia. 700+ enterprise клиентов, 10% Fortune 500.</p>
+        <p style="font-size:0.85rem"><strong>Что сработало:</strong> Продавали СТРАХ ("вы невидимы в AI search") + проприетарные данные как контент. Category creation ("AEO").</p>
+        <p style="font-size:0.85rem"><strong>Raised:</strong> $155M. Не наша ЦА.</p>
+      </div>
+      <div class="card">
+        <h4>Otterly.AI <span class="tag green">$770K ARR, bootstrapped</span></h4>
+        <p style="font-size:0.85rem; color:var(--text-dim); margin:8px 0">Австрия. Ex-VP Marketing Storyblok. Gartner Cool Vendor 2025.</p>
+        <p style="font-size:0.85rem"><strong>Что сработало:</strong> Semrush App Center (моментальный доступ). TechCrunch (1K&rarr;10K юзеров). LinkedIn 3-4 поста/нед. Данные как контент.</p>
+        <p style="font-size:0.85rem"><strong>$0 внешнего финансирования.</strong></p>
+      </div>
+      <div class="card">
+        <h4>Rankfender <span class="tag yellow">Из агентства в SaaS</span></h4>
+        <p style="font-size:0.85rem; color:var(--text-dim); margin:8px 0">Imed Radhouani, SEO-агентство 361.DEV. PH март 2026.</p>
+        <p style="font-size:0.85rem"><strong>Что сработало:</strong> White-label для агентств. Дискуссионные посты на PH.</p>
+        <p style="font-size:0.85rem; color:var(--red)"><strong>Что НЕ сработало:</strong> 6 мес строили enterprise за $2K &mdash; НИКТО не купил.</p>
+      </div>
+    </div>
+
+    <h3>Паттерны: что работает, что нет</h3>
+    <div class="grid2">
+      <div class="card success" style="border-left: 4px solid var(--green)">
+        <h4 style="color:var(--green)">Работает</h4>
+        <ul style="font-size:0.85rem; color:var(--text-dim); padding-left:16px; margin-top:8px">
+          <li>Founder-led контент + LinkedIn (у ВСЕХ)</li>
+          <li>Бесплатный инструмент как воронка (HubSpot, GeoSEO)</li>
+          <li>PR в нужный момент (TechCrunch = 10x рост)</li>
+          <li>PLG + низкая цена (Peec: &euro;85 vs $500+)</li>
+          <li>Данные из продукта = уникальный контент</li>
+          <li>Конференции (BrightonSEO, MozCon)</li>
+        </ul>
+      </div>
+      <div class="card" style="border-left: 4px solid var(--red)">
+        <h4 style="color:var(--red)">НЕ работает</h4>
+        <ul style="font-size:0.85rem; color:var(--text-dim); padding-left:16px; margin-top:8px">
+          <li>Enterprise $2K+/мес (Rankfender доказал)</li>
+          <li>Product Hunt как ОСНОВНОЙ канал</li>
+          <li>Paid ads (никто из топов не вырос через рекламу)</li>
+          <li>Instagram / TikTok для SaaS (0 конверсий)</li>
+          <li>Direct-to-SMB (Vendasta подтвердила: нерентабельно)</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 4: OUR GAP -->
+<section id="gap">
+  <div class="container">
+    <h2><span class="num">04</span> Наше уникальное место</h2>
+    <p class="subtitle">Комбинация фич, которую не делает НИКТО из 40+</p>
+
+    <div class="callout success">
+      <h4>Уникальная комбинация GeoSEO.today</h4>
+      <p style="font-size:0.9rem">Free + Site Crawl 200 стр + 135+ проверок (GEO+SEO) + Evidence-based (15+ научных источников) + Score Gates + AI рекомендации</p>
+      <p style="font-size:0.85rem; color:var(--text-dim); margin-top:8px">Все GEO-инструменты группы A &mdash; это мониторинг промптов ("где вас упоминают?"). GeoSEO отвечает на другой вопрос: "что исправить на сайте?"</p>
+    </div>
+
+    <h3>Критический gap</h3>
+    <div class="grid3">
+      <div class="card" style="border-color:var(--red)">
+        <h4 style="color:var(--red)">LLM-мониторинг</h4>
+        <p style="font-size:0.85rem; color:var(--text-dim)">Есть у ВСЕХ конкурентов группы A. У нас нет. Приоритет #1.</p>
+      </div>
+      <div class="card" style="border-color:var(--orange)">
+        <h4 style="color:var(--orange)">Dashboard с историей</h4>
+        <p style="font-size:0.85rem; color:var(--text-dim)">Без него нет recurring value = нет подписки.</p>
+      </div>
+      <div class="card" style="border-color:var(--yellow)">
+        <h4 style="color:var(--yellow)">White-label</h4>
+        <p style="font-size:0.85rem; color:var(--text-dim)">Блокирует agency план. Нужно для Phase 2.</p>
+      </div>
+    </div>
+
+    <h3>Рынок разделён на два мира</h3>
+    <div class="grid2">
+      <div class="card">
+        <h4>GEO-инструменты</h4>
+        <p style="font-size:0.85rem; color:var(--text-dim)">Otterly, Peec, Profound &mdash; мониторинг AI-упоминаний. Для SEO-профи. Нет site crawl, нет SEO-аудита.</p>
+      </div>
+      <div class="card">
+        <h4>Local SEO инструменты</h4>
+        <p style="font-size:0.85rem; color:var(--text-dim)">BrightLocal, Whitespark, Moz Local &mdash; листинги, citations, GBP. Для агентств. Нет GEO.</p>
+      </div>
+    </div>
+    <div class="callout">
+      <h4>GeoSEO.today = мост между этими мирами</h4>
+      <p style="font-size:0.85rem; color:var(--text-dim)">Единственный инструмент: SEO audit + GEO checks + evidence-based + бесплатный. Ни один из 40+ не делает всё вместе.</p>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 5: 6 SEGMENTS -->
+<section id="segments">
+  <div class="container">
+    <h2><span class="num">05</span> 6 сегментов ЦА: полная матрица</h2>
+    <p class="subtitle">Скоринг каждого сегмента по 6 блокам. На основе реального аудита продукта.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Блок</th>
+            <th>Indie Founders</th>
+            <th>Фрилансеры</th>
+            <th>SEO-агентства</th>
+            <th>Маркетологи</th>
+            <th>Frac. CMO</th>
+            <th>Бизнес-владельцы</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Рынок и деньги</td><td>4.2</td><td>5.4</td><td style="color:var(--green);font-weight:700">7.6</td><td>5.6</td><td>4.8</td><td style="color:var(--red)">2.8</td></tr>
+          <tr><td>Unit economics</td><td>4.2</td><td>5.4</td><td style="color:var(--green);font-weight:700">7.6</td><td>4.6</td><td>5.2</td><td style="color:var(--red)">1.2</td></tr>
+          <tr><td>Product fit (AS IS)</td><td>4.25</td><td>6.0</td><td style="color:var(--green);font-weight:700">7.5</td><td>4.75</td><td>4.75</td><td style="color:var(--red)">1.75</td></tr>
+          <tr><td>Конкуренция (низкая=хорошо)</td><td style="color:var(--green);font-weight:700">6.0</td><td>5.3</td><td>5.0</td><td>5.0</td><td>5.0</td><td>3.0</td></tr>
+          <tr><td>Founder fit и вход</td><td style="color:var(--green);font-weight:700">9.25</td><td>5.25</td><td>3.75</td><td>5.25</td><td>3.25</td><td style="color:var(--red)">1.75</td></tr>
+          <tr><td>Маркетинг и виральность</td><td style="color:var(--green);font-weight:700">7.75</td><td>5.75</td><td>4.25</td><td>5.75</td><td>4.25</td><td>3.0</td></tr>
+          <tr style="background:var(--surface2);font-weight:700"><td>СРЕДНИЙ БАЛЛ</td><td style="color:var(--accent)">5.94</td><td>5.52</td><td style="color:var(--accent)">5.95</td><td>5.16</td><td>4.54</td><td style="color:var(--red)">2.25</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Визуализация по блокам</h3>
+    <div class="bar-chart" style="margin-top:20px">
+      <div class="bar-row"><div class="bar-label">Indie Founders</div><div class="bar-track"><div class="bar-fill" style="width:59.4%;background:linear-gradient(90deg,var(--accent),var(--accent2))">5.94</div></div></div>
+      <div class="bar-row"><div class="bar-label">SEO-агентства</div><div class="bar-track"><div class="bar-fill" style="width:59.5%;background:linear-gradient(90deg,var(--green),var(--accent))">5.95</div></div></div>
+      <div class="bar-row"><div class="bar-label">Фрилансеры</div><div class="bar-track"><div class="bar-fill" style="width:55.2%;background:var(--yellow)">5.52</div></div></div>
+      <div class="bar-row"><div class="bar-label">Маркетологи</div><div class="bar-track"><div class="bar-fill" style="width:51.6%;background:var(--orange)">5.16</div></div></div>
+      <div class="bar-row"><div class="bar-label">Frac. CMO</div><div class="bar-track"><div class="bar-fill" style="width:45.4%;background:var(--pink)">4.54</div></div></div>
+      <div class="bar-row"><div class="bar-label">Бизнес-владельцы</div><div class="bar-track"><div class="bar-fill" style="width:22.5%;background:var(--red)">2.25</div></div></div>
+    </div>
+
+    <div class="callout warning" style="margin-top:32px">
+      <h4>Ключевое открытие</h4>
+      <p style="font-size:0.9rem">Indie Founders и SEO-агентства набрали почти одинаковый балл (5.94 vs 5.95), но по <strong>противоположным причинам</strong>:</p>
+      <p style="font-size:0.85rem; margin-top:8px"><strong style="color:var(--accent)">Founders:</strong> founder fit 9.25 + маркетинг 7.75 &mdash; но деньги 4.2</p>
+      <p style="font-size:0.85rem"><strong style="color:var(--green)">Агентства:</strong> деньги 7.6 + product fit 7.5 &mdash; но founder fit 3.75</p>
+    </div>
+
+    <h3>Почему бизнес-владельцы = НЕ наша ЦА</h3>
+    <div class="card" style="border-color:var(--red); margin-top:16px">
+      <p style="font-size:0.9rem">80-90% выручки local SEO SaaS (BrightLocal, Whitespark) приходит от агентств и фрилансеров. Только 5-10% от бизнес-владельцев. Vendasta пробовала direct-to-SMB &mdash; провал. SEO-дашборд слишком абстрактен для маляра. Он платит $500-800 агентству.</p>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 6: MONEY -->
+<section id="money">
+  <div class="container">
+    <h2><span class="num">06</span> Где деньги</h2>
+    <p class="subtitle">Unit economics по сегментам. Все цифры из исследований.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Метрика</th><th>Indie Founders</th><th>Фрилансеры</th><th>SEO-агентства</th><th>Маркетологи</th><th>Frac. CMO</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Средний чек</td><td>$49</td><td>$49</td><td style="color:var(--green);font-weight:700">$49-149</td><td>$49</td><td>$49-149</td></tr>
+          <tr><td>CAC (органика)</td><td style="color:var(--green)">$50-100</td><td>$80-150</td><td>$100-200</td><td>$80-150</td><td style="color:var(--red)">$200-400</td></tr>
+          <tr><td>Churn/мес</td><td style="color:var(--red)">8.2%</td><td>4-7%</td><td style="color:var(--green);font-weight:700">2%</td><td>5-8%</td><td>3-5%</td></tr>
+          <tr><td>LTV</td><td style="color:var(--red)">$220</td><td>$390</td><td style="color:var(--green);font-weight:700">$588-2,235</td><td>$294</td><td>$540</td></tr>
+          <tr><td>LTV/CAC</td><td>2.2-4.4x</td><td>1.5-2.5x</td><td style="color:var(--green);font-weight:700">2.0-22.4x</td><td>1.5-2.5x</td><td>1.0-1.5x</td></tr>
+          <tr><td>Потолок ARR</td><td>~$1M</td><td>~$3-5M</td><td style="color:var(--green);font-weight:700">~$5-10M</td><td>~$2-4M</td><td>~$2M</td></tr>
+          <tr><td>Подтверждённая модель</td><td style="color:var(--orange)">Слабая</td><td>Средняя</td><td style="color:var(--green)">BrightLocal $32.9M</td><td style="color:var(--orange)">Слабая</td><td style="color:var(--red)">Нет</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>"Зачем платить каждый месяц $49?"</h3>
+    <p style="font-size:0.9rem; color:var(--text-dim); margin-bottom:16px">Аудит = one-time. Без recurring value нет подписки. Что делает продукт подписочным:</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Фича</th><th>Дни dev</th><th>Recurring value</th><th>Для кого</th></tr></thead>
+        <tbody>
+          <tr><td>Dashboard с историей (было/стало)</td><td>10-15</td><td style="color:var(--yellow)">Средний</td><td>Все</td></tr>
+          <tr><td>Еженедельный автоскан + алерты</td><td>7-10</td><td style="color:var(--green)">Сильный</td><td>Founders, агентства</td></tr>
+          <tr><td>LLM-мониторинг (ChatGPT tracking)</td><td>30-45</td><td style="color:var(--green)">Сильный</td><td>SEO-про, founders</td></tr>
+          <tr><td>White-label отчёты</td><td>15-20</td><td style="color:var(--green);font-weight:700">Очень сильный</td><td>Фрилансеры, агентства</td></tr>
+          <tr><td>Competitor tracking</td><td>15-20</td><td style="color:var(--yellow)">Средний</td><td>Все</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 7: CHANNELS -->
+<section id="channels">
+  <div class="container">
+    <h2><span class="num">07</span> Каналы: что работает для кого</h2>
+    <p class="subtitle">Где сидит каждый сегмент и какой контент их цепляет</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Канал</th><th>Indie Founders</th><th>Фрилансеры</th><th>SEO-агентства</th><th>Маркетологи</th></tr></thead>
+        <tbody>
+          <tr><td>X/Twitter</td><td style="color:var(--green);font-weight:700">ОСНОВНОЙ</td><td>Средне</td><td>Средне</td><td>Слабо</td></tr>
+          <tr><td>Reddit</td><td style="color:var(--green)">r/SaaS, r/indiehackers</td><td style="color:var(--green)">r/webdev (2-3M)</td><td style="color:var(--green)">r/SEO (445K)</td><td>r/digital_marketing</td></tr>
+          <tr><td>LinkedIn</td><td>Слабо</td><td>Средне</td><td>Средне</td><td style="color:var(--green)">Основной</td></tr>
+          <tr><td>YouTube</td><td>Средне</td><td style="color:var(--green)">Туториалы</td><td style="color:var(--green)">Кейсы</td><td>Средне</td></tr>
+          <tr><td>Product Hunt</td><td style="color:var(--green);font-weight:700">Основной launch</td><td>Средне</td><td>Знают</td><td>Нет</td></tr>
+          <tr><td>IndieHackers</td><td style="color:var(--green)">Основной</td><td>Нет</td><td>Нет</td><td>Нет</td></tr>
+          <tr><td>Build in Public</td><td style="color:var(--green);font-weight:700">ДА</td><td style="color:var(--red)">Слабо</td><td>Средне</td><td style="color:var(--red)">Нет</td></tr>
+          <tr><td>Instagram / TikTok</td><td style="color:var(--red)">НЕТ</td><td style="color:var(--red)">НЕТ</td><td style="color:var(--red)">НЕТ</td><td style="color:var(--red)">НЕТ</td></tr>
+          <tr><td>Google Ads</td><td style="color:var(--red)">CAC не сходится</td><td style="color:var(--red)">Дорого</td><td style="color:var(--red)">$15-45/клик</td><td style="color:var(--red)">Дорого</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout warning" style="margin-top:24px">
+      <h4>Что ТОЧНО не делать</h4>
+      <p style="font-size:0.85rem">Instagram, TikTok, Google Ads &mdash; ни один GEO-конкурент не вырос через эти каналы. 8 из 10 GEO-инструментов практически не ведут соцсети (кроме Profound с $155M и Otterly с контент-стратегией).</p>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 8: OUR MODEL -->
+<section id="model">
+  <div class="container">
+    <h2><span class="num">08</span> Наша модель: Hybrid</h2>
+    <p class="subtitle">Сценарий C: Start Founder ($49) &rarr; Scale Agency ($149)</p>
+
+    <div class="grid3">
+      <div class="card highlight">
+        <h4 style="color:var(--accent)">Phase 1: Founders</h4>
+        <div class="number">$49/мес</div>
+        <p style="font-size:0.85rem; color:var(--text-dim); margin-top:8px">Indie founders, solopreneurs. Build in public. Упростить язык. 10 дней доработки.</p>
+        <p style="font-size:0.85rem; margin-top:8px"><strong>Месяцы 1-3</strong></p>
+      </div>
+      <div class="card" style="border-color:var(--green)">
+        <h4 style="color:var(--green)">Phase 2: Agency</h4>
+        <div class="number">$149/мес</div>
+        <p style="font-size:0.85rem; color:var(--text-dim); margin-top:8px">SEO-агентства (1-5 чел). White-label + LLM tracking. 45-60 дней dev.</p>
+        <p style="font-size:0.85rem; margin-top:8px"><strong>Месяцы 4-6</strong></p>
+      </div>
+      <div class="card" style="border-color:var(--pink)">
+        <h4 style="color:var(--pink)">Phase 3: Scale</h4>
+        <div class="number">$10K+ MRR</div>
+        <p style="font-size:0.85rem; color:var(--text-dim); margin-top:8px">Оба потока параллельно. Потолок $5-10M ARR.</p>
+        <p style="font-size:0.85rem; margin-top:8px"><strong>Месяцы 7-12</strong></p>
+      </div>
+    </div>
+
+    <h3>Позиционирование</h3>
+    <div class="callout success">
+      <p style="font-size:1.1rem; font-weight:700">"Website visibility checker for founders, not SEO experts."</p>
+      <p style="font-size:0.9rem; color:var(--text-dim); margin-top:8px">"See what Google and AI see &mdash; in plain language."</p>
+    </div>
+
+    <h3>Product-Founder Fit</h3>
+    <div class="card" style="margin-top:16px">
+      <p style="font-size:0.9rem">"Не-SEO-шник для не-SEO-шников" = <strong style="color:var(--green)">СИЛА, не слабость</strong></p>
+      <p style="font-size:0.85rem; color:var(--text-dim); margin-top:8px">Dogfooding подтверждён: Basecamp, Notion, Linear, ConvertKit, Plausible ($3.1M ARR) &mdash; все построены "для себя". В SEO-нише: Morningscore, RankLetter, GrowGanic.</p>
+    </div>
+
+    <h3>Сравнение 3 сценариев</h3>
+    <div class="table-wrap" style="margin-top:16px">
+      <table>
+        <thead><tr><th>Метрика</th><th>A: Founder-first</th><th>B: Pro-tool</th><th style="background:rgba(56,189,248,0.15)">C: Hybrid (выбран)</th></tr></thead>
+        <tbody>
+          <tr><td>Дни до запуска</td><td>10</td><td>90</td><td style="color:var(--green);font-weight:700">10</td></tr>
+          <tr><td>Первые $$</td><td>21 день</td><td>105 дней</td><td style="color:var(--green);font-weight:700">21 день</td></tr>
+          <tr><td>$5K MRR</td><td>мес 7</td><td>мес 8</td><td style="color:var(--green);font-weight:700">мес 5-6</td></tr>
+          <tr><td>$10K MRR</td><td>мес 14-15</td><td>мес 12</td><td style="color:var(--green);font-weight:700">мес 8-9</td></tr>
+          <tr><td>MRR через 12 мес</td><td>$8,624</td><td>$10,593</td><td style="color:var(--green);font-weight:700">$15,943</td></tr>
+          <tr><td>Потолок ARR</td><td style="color:var(--red)">$1M</td><td>$5-10M</td><td style="color:var(--green);font-weight:700">$5-10M</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 9: 90-DAY PLAN -->
+<section id="plan90">
+  <div class="container">
+    <h2><span class="num">09</span> Маркетинговый план: 90 дней</h2>
+    <p class="subtitle">$0 бюджет. 10+ часов/неделю. Все аккаунты с нуля.</p>
+
+    <div class="grid3" style="margin-bottom:32px">
+      <div class="card">
+        <h4>Месяц 1</h4>
+        <div class="number">$735</div>
+        <div class="label">MRR цель</div>
+        <p style="font-size:0.85rem; color:var(--text-dim); margin-top:8px">Build in public. 40 ручных аудитов. Reddit + X + IH. 15 клиентов.</p>
+      </div>
+      <div class="card">
+        <h4>Месяц 2</h4>
+        <div class="number">$1,421</div>
+        <div class="label">MRR цель</div>
+        <p style="font-size:0.85rem; color:var(--text-dim); margin-top:8px">Product Hunt launch. YouTube. Блог. Начало dev dashboard. 29 клиентов.</p>
+      </div>
+      <div class="card">
+        <h4>Месяц 3</h4>
+        <div class="number">$2,058</div>
+        <div class="label">MRR цель</div>
+        <p style="font-size:0.85rem; color:var(--text-dim); margin-top:8px">Agency waitlist. Масштабирование. Подготовка $149 плана. 42 клиента.</p>
+      </div>
+    </div>
+
+    <h3>Таймлайн</h3>
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="time">Неделя 0</div>
+        <h4>Подготовка</h4>
+        <p>Setup: X, LinkedIn, Reddit, IH, PH аккаунты. Упростить язык в продукте. About + Pricing page. Email capture. Написать 5 первых постов.</p>
+      </div>
+      <div class="timeline-item">
+        <div class="time">Неделя 1-2</div>
+        <h4>Набрать карму</h4>
+        <p>Reddit: ТОЛЬКО комментарии (20+ полезных ответов). X: 1 пост/день. 20 ручных аудитов + DM результаты. IH: первый пост.</p>
+      </div>
+      <div class="timeline-item">
+        <div class="time">Неделя 3-4</div>
+        <h4>Первые посты и продажи</h4>
+        <p>Reddit: первые собственные посты. X: threads с данными. PH pre-launch. Ещё 20 ручных аудитов. Первые платящие?</p>
+      </div>
+      <div class="timeline-item">
+        <div class="time">Неделя 5-6</div>
+        <h4>YouTube + контент-машина</h4>
+        <p>Первое YouTube видео. Блог: первая статья. LinkedIn: weekly. Dev: dashboard. Данные из 200+ аудитов = контент.</p>
+      </div>
+      <div class="timeline-item" style="border-left-color:var(--accent)">
+        <div class="time">Неделя 7-8</div>
+        <h4>PRODUCT HUNT LAUNCH</h4>
+        <p>Launch во вторник. Post-launch контент волна. YouTube: второе видео. Цель: 100-300 upvotes.</p>
+      </div>
+      <div class="timeline-item">
+        <div class="time">Неделя 9-10</div>
+        <h4>Agency prep</h4>
+        <p>/agency landing page. Начало agency outreach. LinkedIn agency-focused контент.</p>
+      </div>
+      <div class="timeline-item">
+        <div class="time">Неделя 11-12</div>
+        <h4>Масштабирование</h4>
+        <p>Agency waitlist push. "Month 3 results" mega-post. Подготовка Agency plan ($149).</p>
+      </div>
+    </div>
+
+    <h3>Еженедельный ритм (10+ часов)</h3>
+    <div class="table-wrap" style="margin-top:16px">
+      <table>
+        <thead><tr><th>День</th><th>Действие</th><th>Платформа</th><th>Время</th></tr></thead>
+        <tbody>
+          <tr><td>Пн</td><td>Build in public пост + Reddit ответы</td><td>X + Reddit</td><td>1.5 ч</td></tr>
+          <tr><td>Вт</td><td>Пост с данными</td><td>X + LinkedIn</td><td>1 ч</td></tr>
+          <tr><td>Ср</td><td>Engagement + Reddit помощь</td><td>X + Reddit</td><td>1 ч</td></tr>
+          <tr><td>Чт</td><td>Build in public + IndieHackers</td><td>X + IH</td><td>1 ч</td></tr>
+          <tr><td>Пт</td><td>Итог недели</td><td>X + LinkedIn + IH</td><td>1 ч</td></tr>
+          <tr><td>Сб</td><td>10 ручных аудитов + DM</td><td>Outreach</td><td>2 ч</td></tr>
+          <tr><td>Вс</td><td>Планирование + контент-банк</td><td>&mdash;</td><td>1 ч</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Kill criteria</h3>
+    <div class="grid3" style="margin-top:16px">
+      <div class="card" style="border-color:var(--red)">
+        <h4>Месяц 1</h4>
+        <p style="font-size:0.85rem; color:var(--text-dim)">&lt;50 free аудитов или 0 готовых платить из 40 ручных &rarr; пересмотр</p>
+      </div>
+      <div class="card" style="border-color:var(--orange)">
+        <h4>Месяц 2</h4>
+        <p style="font-size:0.85rem; color:var(--text-dim)">&lt;10 платящих или &lt;200 аудитов или PH &lt;50 upvotes &rarr; менять стратегию</p>
+      </div>
+      <div class="card" style="border-color:var(--yellow)">
+        <h4>Месяц 3</h4>
+        <p style="font-size:0.85rem; color:var(--text-dim)">&lt;$1,000 MRR &rarr; pivot или радикальное изменение</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 10: PROJECTIONS -->
+<section id="projections">
+  <div class="container">
+    <h2><span class="num">10</span> Финансовые прогнозы</h2>
+    <p class="subtitle">Сценарий C (Hybrid). Два потока: founders ($49) + agency ($149 с месяца 4).</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Месяц</th><th>Founders (акт.)</th><th>Agency (акт.)</th><th>MRR Founders</th><th>MRR Agency</th><th style="color:var(--green)">MRR Total</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>1</td><td>15</td><td>&mdash;</td><td>$735</td><td>$0</td><td style="font-weight:700">$735</td></tr>
+          <tr><td>2</td><td>29</td><td>&mdash;</td><td>$1,421</td><td>$0</td><td style="font-weight:700">$1,421</td></tr>
+          <tr><td>3</td><td>42</td><td>&mdash;</td><td>$2,058</td><td>$0</td><td style="font-weight:700">$2,058</td></tr>
+          <tr><td>4</td><td>57</td><td>5</td><td>$2,793</td><td>$745</td><td style="font-weight:700">$3,538</td></tr>
+          <tr><td>5</td><td>70</td><td>10</td><td>$3,430</td><td>$1,490</td><td style="font-weight:700">$4,920</td></tr>
+          <tr><td>6</td><td>82</td><td>15</td><td>$4,018</td><td>$2,235</td><td style="font-weight:700;color:var(--green)">$6,253</td></tr>
+          <tr><td>7</td><td>97</td><td>23</td><td>$4,753</td><td>$3,427</td><td style="font-weight:700">$8,180</td></tr>
+          <tr><td>8</td><td>109</td><td>30</td><td>$5,341</td><td>$4,470</td><td style="font-weight:700">$9,811</td></tr>
+          <tr><td>9</td><td>120</td><td>37</td><td>$5,880</td><td>$5,513</td><td style="font-weight:700;color:var(--green)">$11,393</td></tr>
+          <tr><td>10</td><td>131</td><td>44</td><td>$6,419</td><td>$6,556</td><td style="font-weight:700">$12,975</td></tr>
+          <tr><td>11</td><td>140</td><td>51</td><td>$6,860</td><td>$7,599</td><td style="font-weight:700">$14,459</td></tr>
+          <tr style="background:var(--surface2)"><td><strong>12</strong></td><td><strong>149</strong></td><td><strong>58</strong></td><td><strong>$7,301</strong></td><td><strong>$8,642</strong></td><td style="font-weight:700;color:var(--green);font-size:1.1rem"><strong>$15,943</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Ключевые milestones</h3>
+    <div class="grid4" style="margin-top:16px">
+      <div class="card"><div class="number" style="font-size:1.5rem">$1K</div><div class="label">MRR &mdash; месяц 2</div></div>
+      <div class="card green"><div class="number" style="font-size:1.5rem">$5K</div><div class="label">MRR &mdash; месяц 5-6</div></div>
+      <div class="card" style="border-color:var(--accent)"><div class="number" style="font-size:1.5rem;color:var(--accent)">$10K</div><div class="label">MRR &mdash; месяц 8-9</div></div>
+      <div class="card pink"><div class="number" style="font-size:1.5rem">$191K</div><div class="label">ARR через 12 мес</div></div>
+    </div>
+
+    <h3>Бюджет за 90 дней</h3>
+    <div class="grid2" style="margin-top:16px">
+      <div class="card">
+        <h4>Расходы: <span style="color:var(--red)">$121</span></h4>
+        <p style="font-size:0.85rem; color:var(--text-dim)">Хостинг $36 + API $85. Реклама: $0.</p>
+      </div>
+      <div class="card green">
+        <h4>Выручка: <span style="color:var(--green)">$4,214</span></h4>
+        <p style="font-size:0.85rem; color:var(--text-dim)">42 клиента &times; $49/мес за 3 месяца.</p>
+      </div>
+    </div>
+
+    <h3>Sensitivity: что если churn другой?</h3>
+    <div class="table-wrap" style="margin-top:16px">
+      <table>
+        <thead><tr><th>Churn founders</th><th>LTV</th><th>Активных (мес 12)</th><th>MRR (мес 12)</th></tr></thead>
+        <tbody>
+          <tr><td>6%</td><td>$310</td><td>203</td><td style="color:var(--green)">$9,947</td></tr>
+          <tr style="background:var(--surface2)"><td><strong>8.2% (baseline)</strong></td><td><strong>$220</strong></td><td><strong>176</strong></td><td><strong>$8,624</strong></td></tr>
+          <tr><td>10%</td><td>$179</td><td>155</td><td>$7,595</td></tr>
+          <tr><td>12%</td><td>$147</td><td>135</td><td style="color:var(--red)">$6,615</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <p>GeoSEO Market Intelligence Report &mdash; 22-23 июня 2026</p>
+    <p>13 исследований &bull; 40+ конкурентов &bull; 80+ первичных источников</p>
+    <p style="margin-top:8px; color:var(--border)">Все прогнозы = допущения. Реальные цифры определит рынок.</p>
+  </div>
+</footer>
+
+</body>
+</html>
